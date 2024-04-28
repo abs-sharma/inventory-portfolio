@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./market.db:/app/market.db
+    depends_on:
+      - db
+
+  user:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python user.py
+    depends_on:
+      - app
+
+  db:
+    image: "sqlite:latest"
+    volumes:
+      - ./market.db:/app/market.db
